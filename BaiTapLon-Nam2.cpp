@@ -1,6 +1,14 @@
 //van cong hao
 //6151071045
 //De tai: quan ly sinh vien
+//menu: 
+//1 Nhap thong tin sinh vien
+//2 Xuat thong tin tat ca sinh vien
+//3 them sinh vien
+//4 xoa sinh vien
+//5 danh sach sinh vien duoc nhan hoc bong
+//6 thoat 
+//7 du tru : sua thong tin sinh vien
 #include<iostream>
 #include<string>
 #include<cmath>
@@ -279,11 +287,4 @@ int main(){
 	list.list_sholarship();
 	return 0;
 }
-//menu: 
-//1 Nhap thong tin sinh vien
-//2 Xuat thong tin tat ca sinh vien
-//3 them sinh vien
-//4 xoa sinh vien
-//5 danh sach sinh vien duoc nhan hoc bong
-//6 thoat 
-//7 du tru : sua thong tin sinh vien
+
