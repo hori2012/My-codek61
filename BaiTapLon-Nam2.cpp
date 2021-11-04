@@ -12,7 +12,9 @@
 #include<iostream>
 #include<string>
 #include<cmath>
+#include<fstream>
 using namespace std;
+
 class Profile{
 	private:
 		string fullname, mssv, province, Class;
@@ -21,58 +23,9 @@ class Profile{
 		friend istream& operator >> (istream& is, Profile &pf1);
 		friend ostream& operator << (ostream& os, Profile &pf1);
 		float getGpa();
+		string getName();
 };
-class Practise:public Profile {
-	private:
-		int lesson, allow, n_allow;
-		float practise;
-		int s_lesson;
-	public:
-		friend istream& operator >> (istream& is , Practise &pt1);
-		friend ostream& operator << (ostream& os, Practise &pt1);
-		float point();
-		void setPractise(float x);
-		float getPractise();
-};
-class Scholarship : public Practise{
-	private:
-		string namebank;
-		int numberbank;
-	public:
-		friend istream& operator >> (istream& is, Scholarship &ip1);
-		friend ostream& operator << (ostream& os, Scholarship &ip1);
-		bool check();	
-};
-class Student: public Scholarship{
-	public:
-		friend istream& operator >> (istream& is, Student &st1);
-		friend ostream& operator << (ostream& os, Student &st1);
-		
-};
-struct Node{
-	Student data;
-	Node *next;
-};
-class Slist{
-	private:
-		long size;
-		Node *head;
-		Node *tail;
-	public:
-		Slist();
-		Slist(long size, Node *head, Node *tail);
-		Slist(const Slist &slist);
-		~Slist();
-		Node* createNode(Student st);
-		void addLast(Student st);
-		Node* previous(Node *p);
-		void remove(Node *p);
-		void traverse();
-		void list_student(int &n);
-		void list_sholarship();
-		void Delete(int i);
-			
-};
+
 istream& operator >> (istream& is, Profile &pf1){
 	cout<<"Enter of the name: ";
 	fflush(stdin);
@@ -106,6 +59,23 @@ ostream& operator << (ostream& os, Profile &pf1){
 float Profile::getGpa(){
 	return this->gpa;
 }
+string Profile::getName(){
+	return this->fullname;
+}
+
+class Practise:public Profile {
+	private:
+		int lesson, allow, n_allow;
+		float practise;
+		int s_lesson;
+	public:
+		friend istream& operator >> (istream& is , Practise &pt1);
+		friend ostream& operator << (ostream& os, Practise &pt1);
+		float point();
+		void setPractise(float x);
+		float getPractise();
+};
+
 istream& operator >> (istream& is, Practise &pt1){
 	cout<<"Enter of the sum lesson: ";
 	is>>pt1.s_lesson;
@@ -150,6 +120,15 @@ float Practise::getPractise(){
          setPractise(point());
 	return this->practise;
 }
+class Scholarship : public Practise{
+	private:
+		string namebank;
+		int numberbank;
+	public:
+		friend istream& operator >> (istream& is, Scholarship &ip1);
+		friend ostream& operator << (ostream& os, Scholarship &ip1);
+		bool check();	
+};
 istream& operator >> (istream& is, Scholarship &ip1){
 	if(ip1.check()){
 		cout<<"Confirm Scholarship !!"<<endl;
@@ -177,6 +156,14 @@ bool Scholarship::check(){
 	else 
 		return false;	
 }
+
+class Student: public Scholarship{
+	public:
+		friend istream& operator >> (istream& is, Student &st1);
+		friend ostream& operator << (ostream& os, Student &st1);
+		
+};
+
 istream& operator >> (istream& is, Student &st1){
 	Profile *pf1=static_cast<Profile *>(&st1);
 	is>>*pf1;
@@ -196,33 +183,60 @@ ostream& operator << (ostream& os, Student &st1){
 	os<<*sp1;
 	return os;
 }
-Slist::Slist(){
+
+struct Node{
+	Student data;
+	Node *next;
+};
+
+class Student_Management{
+	private:
+		long size;
+		Node *head;
+		Node *tail;
+	public:
+		Student_Management();
+		Student_Management(long size, Node *head, Node *tail);
+		Student_Management(const Student_Management &slist);
+		~Student_Management();
+		Node* createNode(Student st);
+		void addLast(Student st);
+		Node* previous(Node *p);
+		void remove(Node *p);
+		void traverse();
+		void list_student(int &n);
+		void list_sholarship();
+		void Delete();
+			
+};
+
+Student_Management::Student_Management(){
 	head=NULL;
 	tail=NULL;
 	size=0;
 }
-Slist::Slist(long size, Node* head, Node* tail){
+Student_Management::Student_Management(long size, Node* head, Node* tail){
 	this->size=size;
 	this->head=head;
 	this->tail=tail;
 }
-Slist::Slist(const Slist &slist){
+Student_Management::Student_Management(const Student_Management&slist){
 	this->size=slist.size;
 	this->head=slist.head;
 	this->tail=slist.tail;
 }
-Slist::~Slist(){
+Student_Management::~Student_Management(){
 	delete head;
 	delete tail;
 	size=0;
 }
-Node* Slist::createNode(Student st){
+Node* Student_Management::createNode(Student st){
 	Node *p= new Node;
 	p->data=st;
 	p->next=NULL;
 	return p;
 }
-void Slist::addLast(Student st){
+void Student_Management::addLast(Student st){
 	Node *temp=createNode(st);
 	if(head==NULL){
 		head=tail=temp;
@@ -233,58 +247,85 @@ void Slist::addLast(Student st){
 	}
 	size++;
 }
-Node* Slist::previous(Node *p){
+Node* Student_Management::previous(Node *p){
 	Node *temp=head;
 	while(temp->next !=p){
 		temp=temp->next;
 	}
 	return temp;
 }
-void Slist::remove(Node *p){
+void Student_Management::remove(Node *p){
 	Node *q=previous(p);
 	q->next=p->next;
 	delete p;
 	size--;
 }
-void Slist::traverse(){
+void Student_Management::traverse(){
 	Node *p=head;
+	fstream File;
+	File.open("List_student.txt", ios::out);
+	File<<"=====List Information Student======"<<endl;
 	cout<<"=====List Information Student======"<<endl;
 	while(p!=NULL){
 		cout<<p->data;
+		File<<p->data;
 		p=p->next;
 	}
+	File.close();
 	delete p;
 }
-void Slist::list_student(int &n){
+void Student_Management::list_student(int &n){
 	Student value;
 	do{
 		cout<<"Enter the number of the students: ";
 		cin>>n;
 		cout<<endl;
 	}while(n==0);
+	
 	for(int i=0;i<n;i++){
 		cout<<"Student "<<i+1<<": "<<endl;
 		cin>>value;
 		addLast(value);
 	}
 }
-void Slist::list_sholarship(){
+void Student_Management::list_sholarship(){
+	fstream File;
+	File.open("list_scholarship.txt", ios::out);
+	File<<"======List confirm Scholarship====== "<<endl;
 	cout<<"======List confirm Scholarship====== "<<endl;
 	Node *p=head;
 	while(p!=NULL){
 		if(p->data.check()){
 			cout<<p->data;
+			File<<p->data;
 		}
 		p=p->next;
+	}
+	File.close();
+	delete p;
+}
+void Student_Management ::Delete(){
+	string str;
+	cout<<"Enter the you want to delete: ";
+	fflush(stdin);
+	getline(cin, str);
+	cout<<endl;
+	Node* p=head;
+	while(p!=NULL){
+		if(p->data.getName() == str)
+			remove(p);
+		p=p->next;	
 	}
 	delete p;
 }
 int main(){
-	Slist list;
+	Student_Management list;
 	int n;
 	list.list_student(n);
 	list.traverse();
 	list.list_sholarship();
+	list.Delete("cao nam");
+	cout<<"after delete : "<<endl;
+	list.traverse();
 	return 0;
 }
-
