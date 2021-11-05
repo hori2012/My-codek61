@@ -106,7 +106,6 @@ class QuanLyGiangVien{
                 cout<<endl;
             }
         }
-        //tri
         void SapXep(){
             for(int i=0;i<GV.size()-1;i++){
                 for(int j=i+1;j<GV.size();j++){
