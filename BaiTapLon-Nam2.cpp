@@ -17,7 +17,7 @@ using namespace std;
 
 class Profile{
 	private:
-		string fullname, mssv, province, Class;
+		string  fullname, mssv, province, Class;
 		float gpa;
 	public:
 		friend istream& operator >> (istream& is, Profile &pf1);
@@ -202,11 +202,15 @@ class Student_Management{
 		Node* createNode(Student st);
 		void addLast(Student st);
 		Node* previous(Node *p);
+		void removeFirst();
+		void removeLast();
 		void remove(Node *p);
 		void traverse();
 		void list_student(int &n);
 		void list_sholarship();
+		void searchName();
 		void Delete();
+		void add_student();
 			
 };
 
@@ -247,16 +251,47 @@ void Student_Management::addLast(Student st){
 	}
 	size++;
 }
-Node* Student_Management::previous(Node *p){
-	Node *temp=head;
-	while(temp->next !=p){
-		temp=temp->next;
-	}
-	return temp;
+Node* Student_Management::previous(Node *p) {
+	Node *t = head;
+	while (t->next != p)
+		t = t->next;
+	return t;
 }
-void Student_Management::remove(Node *p){
-	Node *q=previous(p);
-	q->next=p->next;
+void Student_Management::removeFirst(){
+	if(size==0)
+		return;
+	Node* temp=head;
+	head=head->next;
+	delete temp;
+	size --;	
+}
+void Student_Management::removeLast(){
+	if(size==0)
+		return;
+	if(size==1){
+		delete head;
+		size--;
+		return;
+	}
+	Node *p=previous(tail);
+	Node *temp=tail;
+	p->next=NULL;
+	tail=p;
+	delete temp;
+	size--;
+		
+}
+void Student_Management::remove(Node *p) {
+	if (p == head) {
+		removeFirst();
+		return;
+	}
+	if (p == tail) {
+		removeLast();
+		return;
+	}
+	Node *pre = previous(p);
+	pre->next = p->next;
 	delete p;
 	size--;
 }
@@ -265,7 +300,6 @@ void Student_Management::traverse(){
 	fstream File;
 	File.open("List_student.txt", ios::out);
 	File<<"=====List Information Student======"<<endl;
-	cout<<"=====List Information Student======"<<endl;
 	while(p!=NULL){
 		cout<<p->data;
 		File<<p->data;
@@ -299,33 +333,106 @@ void Student_Management::list_sholarship(){
 			cout<<p->data;
 			File<<p->data;
 		}
+		else
+			cout<<"Don't student confirm scholarship !!"<<endl;
 		p=p->next;
 	}
 	File.close();
 	delete p;
 }
-void Student_Management ::Delete(){
+void Student_Management ::searchName(){
 	string str;
-	cout<<"Enter the you want to delete: ";
+	cout<<"Enter the name you want to search: ";
 	fflush(stdin);
 	getline(cin, str);
 	cout<<endl;
 	Node* p=head;
 	while(p!=NULL){
 		if(p->data.getName() == str)
-			remove(p);
+			cout<<p->data;
 		p=p->next;	
 	}
 	delete p;
 }
+void Student_Management::Delete(){
+	string str;
+	cout<<"Enter the name you want to delete: ";
+	fflush(stdin);
+	getline(cin, str);
+	cout<<endl;
+	Node *p=head;
+	while(p!=NULL){
+		if(p->data.getName() == str){
+			remove(p);
+		}
+		p=p->next;
+	}
+	delete p;
+}
+void Student_Management::add_student(){
+	int n;
+	cout<<"Enter the number af the add student: ";
+	cin>>n;
+	if(n==0){
+		return;
+	}
+	Student value;
+	for(int i=0; i<n;i++){
+		cout<<"Student "<<i+1<<endl;
+		cin>>value;
+		addLast(value);
+	}	
+}
 int main(){
 	Student_Management list;
 	int n;
-	list.list_student(n);
-	list.traverse();
-	list.list_sholarship();
-	list.Delete("cao nam");
-	cout<<"after delete : "<<endl;
-	list.traverse();
+	int choice;
+	do{
+		cout<<endl;
+		cout<<"<-----------------MENU----------------->"<<endl;
+		cout<<"1. Nhap thong tin sinh vien"<<endl;
+		cout<<"2. Danh sach sinh vien "<<endl;
+		cout<<"3. Danh sach sinh vien nhan hoc bong"<<endl;
+		cout<<"4. Them sinh vien vao danh sach"<<endl;
+		cout<<"5. Xoa sinh vien ra khoi danh sach"<<endl;
+		cout<<"6. Sua thong tin sinh vien"<<endl;
+		cout<<"7. Tim kiem sinh vien"<<endl;
+		cout<<"Nhan phim 0 de thoat !!"<<endl;
+		cout<<"<-----------------END----------------->"<<endl;
+		cout<<"--> Vui long chon chuc nang: ";
+		cin>>choice;
+		cout<<endl;
+		switch(choice){
+			case 1:
+				list.list_student(n);
+				break;
+			case 2:
+				cout<<"============LIST STUDENT============"<<endl;
+				list.traverse();
+				break;
+			case 3:
+				list.list_sholarship();
+				break;
+			case 4:
+				list.add_student();
+				cout<<"Danh sach sau khi them "<<endl;
+				list.traverse();
+				break;
+			case 5:
+				list.Delete();
+				cout<<"Danh sach sau khi xoa "<<endl;
+				list.traverse();
+				break;
+			case 6:
+				break;
+			case 7:
+				list.searchName();	
+			default:
+				choice=0;
+				break;				
+		}
+	}while(choice!=0);
+
+	
 	return 0;
 }
