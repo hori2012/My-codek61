@@ -13,7 +13,6 @@
 #include<string>
 #include<cmath>
 #include<fstream>
-#include<cstdlib>
 using namespace std;
 
 class Profile{
@@ -82,6 +81,7 @@ class Practise:public Profile {
 		float point();
 		void setPractise(float x);
 		float getPractise();
+		int get_n_Allow();
 		void set_Lesson();
 		void set_Allow();
 		void set_n_Allow();
@@ -103,7 +103,7 @@ istream& operator >> (istream& is, Practise &pt1){
 	return is;
 }
 ostream& operator << (ostream& os, Practise &pt1){
-	os<<"Tong so buoi: "<<pt1.s_lesson<<endl;
+	os<<"Tong so buoi (1 ki): "<<pt1.s_lesson<<endl;
 	os<<"So buoi hoc: "<<pt1.lesson<<endl;
 	os<<"Nghi co phep: "<<pt1.allow<<endl;
 	os<<"Nghi khong phep: "<<pt1.n_allow<<endl;
@@ -130,6 +130,9 @@ void Practise::setPractise(float x){
 float Practise::getPractise(){
          setPractise(point());
 	return this->practise;
+}
+int Practise::get_n_Allow(){
+	return this->n_allow;
 }
 void Practise::set_Lesson(){
 	int number;
@@ -165,28 +168,22 @@ class Scholarship : public Practise{
 		void set_Numberbank();
 };
 istream& operator >> (istream& is, Scholarship &ip1){
-	if(ip1.check()){
-		cout<<"Confirm Scholarship !!"<<endl;
 		cout<<"Nhap ten ngan hang: ";
 		fflush(stdin);
 		getline(is, ip1.namebank);
 		cout<<endl;
-		cout<<"Nhap so tai khoan ngan hang: ";
+		cout<<"Nhap so tai khoan: ";
 		is>>ip1.numberbank;
 		cout<<endl;
 		return is;
-	}
-	cout<<"Don't Scholarship !!"<<endl;
-	ip1.namebank="0";
-	ip1.numberbank=0;
 }
 ostream& operator << (ostream& os, Scholarship &ip1){
-		os<<"Name bank: "<<ip1.namebank<<endl;
-		os<<"Number bank: "<<ip1.numberbank<<endl;
+		os<<"Ten ngan: "<<ip1.namebank<<endl;
+		os<<"So tai khoan: "<<ip1.numberbank<<endl;
 		return os;
 }
 bool Scholarship::check(){
-	if(getGpa() >= 7.5 && getPractise() >= 4)
+	if(getGpa() >= 7.9 && getPractise() >= 4 && get_n_Allow() < 3)
 		return true;
 	else 
 		return false;	
@@ -275,7 +272,7 @@ Student_Management::Student_Management(long size, Node* head, Node* tail){
 	this->head=head;
 	this->tail=tail;
 }
-Student_Management::Student_Management(const Student_Management&slist){
+Student_Management::Student_Management(const Student_Management &slist){
 	this->size=slist.size;
 	this->head=slist.head;
 	this->tail=slist.tail;
@@ -376,7 +373,7 @@ void Student_Management::list_student(int &n){
 void Student_Management::list_sholarship(){
 	fstream File;
 	File.open("list_scholarship.txt", ios::out);
-	File<<"======List confirm Scholarship====== "<<endl;
+	File<<"======DANH SACH HOC BONG====== "<<endl;
 	cout<<"======DANH SACH HOC BONG====== "<<endl;
 	Node *p=head;
 	while(p!=NULL){
@@ -473,23 +470,11 @@ void Student_Management::fix_infor(){
 						p->data.set_n_Allow();
 						break;
 					case 5:
-						if(p->data.check()){
-							p->data.set_Namebank();
-							break;
-						}
-						else{
-							cout<<"Doi tuong khong thuoc dien duoc sua !!"<<endl;
-						}	
+						p->data.set_Namebank();
 						break;
 					case 6:
-						if(p->data.check()){
-							p->data.set_Numberbank();
-							break;
-						}
-						else{
-							cout<<"Doi tuong khong thuoc dien sua !!"<<endl;
-						}	
-						break;	
+						p->data.set_Numberbank();
+						break;
 					default:
 						choice=0;
 						break;			
@@ -531,12 +516,12 @@ int main(){
 				break;
 			case 4:
 				list.add_student();
-				cout<<"Danh sach sau khi them "<<endl;
+				cout<<"--------Danh sach sau khi them--------"<<endl;
 				list.traverse();
 				break;
 			case 5:
 				list.Delete();
-				cout<<"Danh sach sau khi xoa "<<endl;
+				cout<<"--------Danh sach sau khi xoa--------"<<endl;
 				list.traverse();
 				break;
 			case 6:
