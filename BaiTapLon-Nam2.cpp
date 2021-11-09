@@ -2,13 +2,14 @@
 //6151071045
 //De tai: quan ly sinh vien
 //menu: 
-//1 Nhap thong tin sinh vien
-//2 Xuat thong tin tat ca sinh vien
-//3 them sinh vien
-//4 xoa sinh vien
-//5 danh sach sinh vien duoc nhan hoc bong
-//6 thoat 
-//7 du tru : sua thong tin sinh vien
+//1. Nhap thong tin sinh vien
+//2. Danh sach sinh vien
+//3. Danh sach nhan hoc bong
+//4. Them sinh vien
+//5. Sua thong tin sinh vien
+//6. Xoa sinh vien
+//7. Tim kiem sinh vien
+// Nhan 0 de thoat !!
 #include<iostream>
 #include<string>
 #include<cmath>
