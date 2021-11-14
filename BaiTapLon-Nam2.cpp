@@ -23,12 +23,12 @@ class Profile{
 	public:
 		friend istream& operator >> (istream& is, Profile &pf1);
 		friend ostream& operator << (ostream& os, Profile &pf1);
-		float getGpa();
-		string getName();
-		void set_Gpa() ;
+		float getGpa(); 		//lay diem trung binh
+		string getName();		//lay ten sinh vien
+		void set_Gpa() ;		//dat lai diem trung binh
 };
 
-istream& operator >> (istream& is, Profile &pf1){
+istream& operator >> (istream& is, Profile &pf1){    //nhap thong tin sinh vien
 	cout<<"Nhap ho ten sinh vien: ";
 	fflush(stdin);
 	getline(is, pf1.fullname);
@@ -50,9 +50,9 @@ istream& operator >> (istream& is, Profile &pf1){
 	cout<<endl;
 	return is;
 }
-ostream& operator << (ostream& os, Profile &pf1){
-	os<<"Ho va ten: "<<pf1.fullname<<endl;
+ostream& operator << (ostream& os, Profile &pf1){		//xuat thong tin sinh vien
 	os<<"MSSV: "<<pf1.mssv<<endl;
+	os<<"Ho va ten: "<<pf1.fullname<<endl;
 	os<<"Lop: "<<pf1.Class<<endl;
 	os<<"Que: "<<pf1.province<<endl;
 	os<<"Diem trung binh: "<<pf1.gpa<<endl;
@@ -79,32 +79,40 @@ class Practise:public Profile {
 	public:
 		friend istream& operator >> (istream& is , Practise &pt1);
 		friend ostream& operator << (ostream& os, Practise &pt1);
-		float point();
-		void setPractise(float x);
-		float getPractise();
-		int get_n_Allow();
-		void set_Lesson();
-		void set_Allow();
-		void set_n_Allow();
+		float point();				//tinh diem ren luyen
+		void setPractise(float x);	//dat laij diem ren luyen
+		float getPractise();		//lay diem ren luyen
+		int get_n_Allow();			//lay so buoi nghi khong phep
+		int get_Allow();			//lay so buoi nghi co phep
+		void set_s_lesson();		//sua tong so buoi hoc (1 ki)
+		void set_All();				//sua lai tat ca thong tin
 };
 
 istream& operator >> (istream& is, Practise &pt1){
 	cout<<"Nhap tong so buoi hoc (1 ki): ";
 	is>>pt1.s_lesson;
 	cout<<endl;
-	cout<<"Nhap so buoi da hoc: ";
-	is>>pt1.lesson;
-	cout<<endl;
-	cout<<"Nhap so buoi nghi co phep: ";
-	is>>pt1.allow;
-	cout<<endl;
-	cout<<"Nhap so buoi nghi khong phep: ";
-	is>>pt1.n_allow;
-	cout<<endl;
+	do{
+		cout<<"Nhap so buoi da hoc: ";
+		is>>pt1.lesson;
+		cout<<endl;
+	}while(pt1.lesson > pt1.s_lesson);
+	int key1=(pt1.s_lesson - pt1.lesson);
+	do{
+		cout<<"Nhap so buoi nghi co phep: ";
+		is>>pt1.allow;
+		cout<<endl;
+	}while( pt1.allow > key1  );
+	int key2=(pt1.s_lesson - pt1.lesson - pt1.allow);
+	do{
+		cout<<"Nhap so buoi nghi khong phep: ";
+		is>>pt1.n_allow;
+		cout<<endl;
+	}while( pt1.n_allow > key2 || pt1.n_allow < key2 );
 	return is;
 }
 ostream& operator << (ostream& os, Practise &pt1){
-	os<<"Tong so buoi (1 ki): "<<pt1.s_lesson<<endl;
+	os<<"Tong so buoi (1 ky): "<<pt1.s_lesson<<endl;
 	os<<"So buoi hoc: "<<pt1.lesson<<endl;
 	os<<"Nghi co phep: "<<pt1.allow<<endl;
 	os<<"Nghi khong phep: "<<pt1.n_allow<<endl;
@@ -116,12 +124,12 @@ float Practise::point(){
 	int pre;
 	float temp;
 	cur= allow + n_allow;
-	if(cur > (float)(s_lesson * 0.15)){
-		temp=0;
+	if(cur > (float)(s_lesson * 0.15)){   //so buoi duoc nghi khong qua 15% tong so buoi hoc
+		temp=0;							
 	}
 	else{
-		pre=lesson*5 + allow*3 + n_allow*2;
-		temp=(float)(pre*1.0/s_lesson);
+		pre=lesson*5 + allow*3 - n_allow*3;  //moi buoi hoc duoc 5d , co phep duoc 3d, khong phep -3d
+		temp=(float)(pre*1.0/s_lesson);   //diem ren luyen = tong diem dat duoc / tong so buoi hoc
 	}
 	return temp;
 } 
@@ -135,26 +143,38 @@ float Practise::getPractise(){
 int Practise::get_n_Allow(){
 	return this->n_allow;
 }
-void Practise::set_Lesson(){
-	int number;
-	cout<<"Nhap tong so buoi da hoc: ";
-	cin>>number;
-	cout<<endl;
-	this->lesson=number;
+int Practise::get_Allow(){
+	return this->allow;
 }
-void Practise::set_Allow(){
+void Practise::set_s_lesson(){
 	int number;
-	cout<<"Nhap so buoi nghi co phep: ";
+	cout<<"Nhap tong so buoi hoc (1 ky) moi: ";
 	cin>>number;
 	cout<<endl;
-	this->allow=number;
+	this->s_lesson=number;
 }
-void Practise::set_n_Allow(){
-	int number;
-	cout<<"Nhap so buoi nghi khong phep: ";
-	cin>>number;
-	cout<<endl;
-	this->n_allow=number;
+void Practise::set_All(){
+	int number1, number2, number3;
+	do{
+		cout<<"Nhap so buoi da hoc moi: ";
+		cin>>number1;
+		cout<<endl;
+	}while(number1 > this->s_lesson);
+	int key1=(this->s_lesson - number1);
+	do{
+		cout<<"Nhap so buoi nghi co phep moi: ";
+		cin>>number2;
+		cout<<endl;
+	}while( number2 > key1  );
+	int key2=(this->s_lesson - number1 - number2);
+	do{
+		cout<<"Nhap so buoi nghi khong phep moi: ";
+		cin>>number3;
+		cout<<endl;
+	}while( number3 > key2 || number3 < key2 );
+	this->lesson=number1;
+	this->allow=number2;
+	this->n_allow=number3;
 }
 
 class Scholarship : public Practise{
@@ -164,9 +184,9 @@ class Scholarship : public Practise{
 	public:
 		friend istream& operator >> (istream& is, Scholarship &ip1);
 		friend ostream& operator << (ostream& os, Scholarship &ip1);
-		bool check();	
-		void set_Namebank();
-		void set_Numberbank();
+		bool check();			//kiem tra sinh vien thoa yeu cau duoc hoc bong
+		void set_Namebank();	//dat lai ten ngan hang
+		void set_Numberbank();	//dat lai so tai khoan
 };
 istream& operator >> (istream& is, Scholarship &ip1){
 		cout<<"Nhap ten ngan hang: ";
@@ -184,7 +204,7 @@ ostream& operator << (ostream& os, Scholarship &ip1){
 		return os;
 }
 bool Scholarship::check(){
-	if(getGpa() >= 7.9 && getPractise() >= 4 && get_n_Allow() < 3)
+	if(getGpa() >= 7.9 && getPractise() >= 4 && get_n_Allow() < 3 && get_Allow() < 4)  //dieu kien xet hoc bong: GPA>=7.9, practise >=4, n_allow < 3, allow < 4.
 		return true;
 	else 
 		return false;	
@@ -209,7 +229,6 @@ class Student: public Scholarship{
 	public:
 		friend istream& operator >> (istream& is, Student &st1);
 		friend ostream& operator << (ostream& os, Student &st1);
-		
 };
 
 istream& operator >> (istream& is, Student &st1){
@@ -223,7 +242,7 @@ istream& operator >> (istream& is, Student &st1){
 }
 ostream& operator << (ostream& os, Student &st1){
 	os<<"~~~~~~~~~~~~~~~"<<endl;
-	Profile *pf1=static_cast<Profile *>(&st1);
+	Profile *pf1=static_cast<Profile *>(&st1);          //ep kieu 
 	os<<*pf1;
 	Practise *pr1=static_cast<Practise *>(&st1);
 	os<<*pr1;
@@ -239,28 +258,28 @@ struct Node{
 
 class Student_Management{
 	private:
-		long size;
-		Node *head;
-		Node *tail;
+		long size;				//quan ly kich thuoc danh sach
+		Node *head;				//quan ly phan tu dau danh sach
+		Node *tail;				//quan ly phan tu cuoi danh sach
 	public:
-		Student_Management();
-		Student_Management(long size, Node *head, Node *tail);
-		Student_Management(const Student_Management &slist);
-		~Student_Management();
-		Node* createNode(Student st);
-		void addLast(Student st);
-		Node* previous(Node *p);
-		void removeFirst();
-		void removeLast();
-		void remove(Node *p);
-		void traverse();
-		void list_student(int &n);
-		void list_sholarship();
-		void searchName();
-		void Delete();
-		void add_student();
-		void fix_infor();
-			
+		Student_Management();		//khoi tao mac dinh
+		Student_Management(long size, Node *head, Node *tail);		//khoi tao day du
+		Student_Management(const Student_Management &slist);		//khoi tao sao chep
+		~Student_Management();			//ham huy	
+		Node* createNode(Student st);	//tao mot node moi
+		void addLast(Student st);		//chen vao cuoi danh sach
+		Node* previous(Node *p);		//tim node truoc node p
+		void removeFirst();				//xoa node dau tien
+		void removeLast();				//xoa node cuoi cung
+		void remove(Node *p);			//xoa node bat ky
+		void traverse();				//duyet danh sach lien ket
+		long get_Size();				//lay kich thuoc danh sach
+		void list_student(int &n);		//hien thi cac thong tin sin vien trong danh sach
+		void list_sholarship();			//hien thi thong tin sinh vien nhan hoc bong
+		void searchName();				//tim kiem sinh vien theo ten
+		void Delete();					//xoa sinh vien theo ten
+		void add_student();				//them sinh vien vao danh sach
+		void fix_infor();				//sua thong tin sinh vien	
 };
 
 Student_Management::Student_Management(){
@@ -328,7 +347,6 @@ void Student_Management::removeLast(){
 	tail=p;
 	delete temp;
 	size--;
-		
 }
 void Student_Management::remove(Node *p) {
 	if (p == head) {
@@ -347,14 +365,14 @@ void Student_Management::remove(Node *p) {
 void Student_Management::traverse(){
 	Node *p=head;
 	fstream File;
-	File.open("List_student.txt", ios::out);
+	File.open("List_student.txt", ios::out);   //mo file o che do ghi
 	File<<"=====DANH SACH THONG TIN SINH VIEN======"<<endl;
 	while(p!=NULL){
 		cout<<p->data;
-		File<<p->data;
+		File<<p->data;  //ghi thong tin vao file
 		p=p->next;
 	}
-	File.close();
+	File.close();   	//dong file 
 	delete p;
 }
 void Student_Management::list_student(int &n){
@@ -364,15 +382,19 @@ void Student_Management::list_student(int &n){
 		cin>>n;
 		cout<<endl;
 	}while(n==0);
-	
+	cout<<"Vui long nhap theo yeu cau !!"<<endl; 
 	for(int i=0;i<n;i++){
 		cout<<"Sinh vien "<<i+1<<": "<<endl;
 		cin>>value;
 		addLast(value);
 	}
 }
+long Student_Management::get_Size(){
+	return this->size;
+}
 void Student_Management::list_sholarship(){
 	fstream File;
+	int count =0;
 	File.open("list_scholarship.txt", ios::out);
 	File<<"======DANH SACH HOC BONG====== "<<endl;
 	cout<<"======DANH SACH HOC BONG====== "<<endl;
@@ -381,28 +403,33 @@ void Student_Management::list_sholarship(){
 		if(p->data.check()){
 			cout<<p->data;
 			File<<p->data;
+			count++;
 		}
-		else
-			cout<<"Don't student confirm scholarship !!"<<endl;
 		p=p->next;
+	}
+	if(count == 0){
+		cout<<"Khong co sinh vien nao dat hoc bong !!"<<endl;
 	}
 	File.close();
 	delete p;
 }
 void Student_Management ::searchName(){
 	string str;
+	int count = 0;
 	cout<<"Nhap ten muon tim: ";
 	fflush(stdin);
 	getline(cin, str);
 	cout<<endl;
 	Node* p=head;
 	while(p!=NULL){
-		if(p->data.getName() == str)
+		if(p->data.getName() == str){
 			cout<<p->data;
-		else{
-			cout<<"Don't the name you want to search !!"<<endl;
-		}	
+			count++;
+		}
 		p=p->next;	
+	}
+	if(count == 0){
+		cout<<"Khong ton tai ten sinh vien muon tim !!"<<endl;
 	}
 	delete p;
 }
@@ -448,12 +475,12 @@ void Student_Management::fix_infor(){
 			do{
 				cout<<"-------Cac noi dung sua-------"<<endl;
 				cout<<"1. Sua diem trung binh"<<endl;
-				cout<<"2. Sua tong so buoi da hoc"<<endl;
-				cout<<"3. Sua so buoi nghi co phep"<<endl;
-				cout<<"4. Sua so buoi nghi khong phep"<<endl;
-				cout<<"5. Sua ten ngan hang"<<endl;
-				cout<<"6. Sua so tai khoan ngan hang"<<endl;
+				cout<<"2. Sua tong so buoi hoc (1 ki)"<<endl;
+				cout<<"3. Sua so buoi da hoc, nghi co phep, khong phep"<<endl;
+				cout<<"4. Sua ten ngan hang"<<endl;
+				cout<<"5. Sua so tai khoan ngan hang"<<endl;
 				cout<<"Nhan phim 0 de tro lai menu chinh !!"<<endl;
+				cout<<"-------------------------------"<<endl;
 				cout<<"--->Vui long chon chuc nang: ";
 				cin>>choice;
 				cout<<endl;
@@ -462,18 +489,15 @@ void Student_Management::fix_infor(){
 						p->data.set_Gpa();
 						break;
 					case 2:
-						p->data.set_Lesson();
+						p->data.set_s_lesson();
 						break;
 					case 3:
-						p->data.set_Allow();
+						p->data.set_All();
 						break;
 					case 4:
-						p->data.set_n_Allow();
-						break;
-					case 5:
 						p->data.set_Namebank();
 						break;
-					case 6:
+					case 5:
 						p->data.set_Numberbank();
 						break;
 					default:
@@ -510,7 +534,12 @@ int main(){
 				break;
 			case 2:
 				cout<<"============LIST STUDENT============"<<endl;
-				list.traverse();
+				if(list.get_Size() == 0){
+					cout<<"Khong co sinh vien nao ton tai trong danh sach !!"<<endl;
+				}
+				else {
+					list.traverse();
+				}
 				break;
 			case 3:
 				list.list_sholarship();
@@ -523,7 +552,12 @@ int main(){
 			case 5:
 				list.Delete();
 				cout<<"--------Danh sach sau khi xoa--------"<<endl;
-				list.traverse();
+				if(list.get_Size() == 0){
+					cout<<"Danh sach trong !!"<<endl;
+				}
+				else {
+					list.traverse();
+				}
 				break;
 			case 6:
 				list.fix_infor();
@@ -536,7 +570,5 @@ int main(){
 				break;				
 		}
 	}while(choice!=0);
-
-	
 	return 0;
 }
