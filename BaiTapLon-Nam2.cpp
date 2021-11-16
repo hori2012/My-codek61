@@ -10,6 +10,7 @@
 //6. Xoa sinh vien
 //7. Tim kiem sinh vien
 // Nhan 0 de thoat !!
+//https://forms.gle/244Cj7V83Z9wrMih6
 #include<iostream>
 #include<string>
 #include<cmath>
