@@ -568,6 +568,7 @@ int main(){
 				break;
 			default:
 				choice=0;
+				cout<<"Cam on vi da su dung !!"<<endl;
 				break;				
 		}
 	}while(choice!=0);
