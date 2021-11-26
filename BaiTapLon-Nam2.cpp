@@ -216,7 +216,7 @@ void Scholarship::set_Namebank(){
 	fflush(stdin);
 	getline(cin, str);
 	cout<<endl;
-	this->namebank;
+	this->namebank = str;
 }
 void Scholarship::set_Numberbank(){
 	int number;
