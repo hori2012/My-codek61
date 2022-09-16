@@ -1,0 +1,8 @@
+C:\Users\Cong Hao\source\repos\PhanSo\PhanSo\bin\Debug\PhanSo.exe.config
+C:\Users\Cong Hao\source\repos\PhanSo\PhanSo\bin\Debug\PhanSo.exe
+C:\Users\Cong Hao\source\repos\PhanSo\PhanSo\bin\Debug\PhanSo.pdb
+C:\Users\Cong Hao\source\repos\PhanSo\PhanSo\obj\Debug\PhanSo.csproj.AssemblyReference.cache
+C:\Users\Cong Hao\source\repos\PhanSo\PhanSo\obj\Debug\PhanSo.csproj.SuggestedBindingRedirects.cache
+C:\Users\Cong Hao\source\repos\PhanSo\PhanSo\obj\Debug\PhanSo.csproj.CoreCompileInputs.cache
+C:\Users\Cong Hao\source\repos\PhanSo\PhanSo\obj\Debug\PhanSo.exe
+C:\Users\Cong Hao\source\repos\PhanSo\PhanSo\obj\Debug\PhanSo.pdb
