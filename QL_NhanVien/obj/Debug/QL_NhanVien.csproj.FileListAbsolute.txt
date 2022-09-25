@@ -1,0 +1,8 @@
+C:\Users\Cong Hao\source\repos\QL_CanBo\QL_NhanVien\bin\Debug\QL_NhanVien.exe.config
+C:\Users\Cong Hao\source\repos\QL_CanBo\QL_NhanVien\bin\Debug\QL_NhanVien.exe
+C:\Users\Cong Hao\source\repos\QL_CanBo\QL_NhanVien\bin\Debug\QL_NhanVien.pdb
+C:\Users\Cong Hao\source\repos\QL_CanBo\QL_NhanVien\obj\Debug\QL_NhanVien.csproj.AssemblyReference.cache
+C:\Users\Cong Hao\source\repos\QL_CanBo\QL_NhanVien\obj\Debug\QL_NhanVien.csproj.SuggestedBindingRedirects.cache
+C:\Users\Cong Hao\source\repos\QL_CanBo\QL_NhanVien\obj\Debug\QL_NhanVien.csproj.CoreCompileInputs.cache
+C:\Users\Cong Hao\source\repos\QL_CanBo\QL_NhanVien\obj\Debug\QL_NhanVien.exe
+C:\Users\Cong Hao\source\repos\QL_CanBo\QL_NhanVien\obj\Debug\QL_NhanVien.pdb
